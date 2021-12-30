@@ -1,12 +1,15 @@
 import React from 'react';
 //import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route} from "react-router-dom";
-import Controller from './Components/Controller';
-
+import Controller from './Components/Model';
+import Model from './Components/Model';
 
 function App() {
   return (
-<Controller/>
+    <>
+    <h1>hi</h1>
+      <Model/>
+    </>
   );
 }
 
