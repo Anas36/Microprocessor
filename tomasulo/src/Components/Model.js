@@ -3,11 +3,17 @@ import React, { useEffect, useState } from "react";
 import raw from './program.txt';
 import Table from './table'
 import { createContext } from 'react';
+import aLUReservationStations from "./ReservationStations/ALUReservationStations";
+import loadBuffer from "./ReservationStations/LoadBuffer";
+import storeBuffer from "./ReservationStations/StoreBuffer";
 
 export var Context = React.createContext()
 
 const Controller =()=> {
   const InstructionFile = new instructionFile();
+  const ALUReservationStations = new aLUReservationStations();
+  const StoreBuffer = new storeBuffer();
+  const LoadBuffer = new loadBuffer();
   const CycleNo = 1;
 
   useEffect(() => {
@@ -30,19 +36,10 @@ const Controller =()=> {
           if(content[i] == '\n'){
             InstructionFile.NumberOfInst ++;
               inst = inst.slice(0,inst.length-1)
-              const line = inst.split(/[ ,]+/);
-              if(line[0] == 'L.D' || line[0] == 'S.D'){
-                  InstructionFile.addInstruction(line[0],line[1],line[2]);
-                  console.log('first if',InstructionFile);
-                  
-              }
-              else{
-                  InstructionFile.addInstruction(line[0],line[1],line[2],line[3]);
-                  console.log('second if',InstructionFile);
-              }
-                console.log('inst',inst)
-
-              inst = '';
+              //const line = inst.split(/[ ,]+/);      
+            InstructionFile.addInstruction(inst);    
+            console.log('inst',inst)
+            inst = '';
           }
           console.log('final:',InstructionFile)
 
