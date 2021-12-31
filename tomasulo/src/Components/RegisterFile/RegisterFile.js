@@ -1,4 +1,4 @@
-class ReservationStations{
+class RegisterFile{
 
     constructor(size){
         this.size = size;
@@ -10,9 +10,8 @@ class ReservationStations{
     addRegister(register,qi,content)
     {
        
-            const register = {Register:register,Qi:qi,Content:content};
-            this.RegisterFile.push(register);
-            return 1;
+            const Register = {Register:register,Qi:qi,Content:content};
+            this.RegisterFile.push(Register);
     }
    
     //getters
@@ -82,4 +81,4 @@ class ReservationStations{
     }
 }
 
-export default ReservationStations;
+export default RegisterFile;

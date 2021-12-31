@@ -18,7 +18,7 @@ class StoreBuffer{
         return -1;
     }
   
-    addROOM(address,v,q,busy)
+    addROOM(address,v,q)
     {
         const index = this.emptyIndex(); 
         if(index == -1)
@@ -26,12 +26,12 @@ class StoreBuffer{
             return -1; //no space
         }
        
-        const room = {Address:address,V:v,Q:q,Busy:busy};
+        const room = {Address:address,V:v,Q:q,Busy:1};
         this.storeBuffer[index] = room;
         return 1;
     }
     //getters
-    getaddresseration(index)
+    getAddress(index)
     {
         return this.storeBuffer[index].Address;
     }
@@ -41,7 +41,7 @@ class StoreBuffer{
     }
    
     
-    getq(index)
+    getQ(index)
     {
         return this.storeBuffer[index].Q;
     }
@@ -51,16 +51,16 @@ class StoreBuffer{
     }
 
     //setters
-    setaddresseration(index,address)
+    setAddress(index,address)
     {
         this.storeBuffer[index].Address = address;
     }
-    setv(index,v)
+    setV(index,v)
     {
         this.storeBuffer[index].V = v;
     }
  
-    setq(index,q)
+    setQ(index,q)
     {
         this.storeBuffer[index].Q = q;
     }

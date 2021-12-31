@@ -19,7 +19,7 @@ class ReservationStations{
         return -1;
     }
     
-    addROOM(op,vj,vk,qj,qk,busy)
+    addROOM(op,vj,vk,qj,qk)
     {
         const index = this.emptyIndex(); 
         if(index == -1)
@@ -27,7 +27,7 @@ class ReservationStations{
             return -1; //no space
         }
        
-            const room = {OP:op,Vj:vj,Vk:vk,Qj:qj,Qk:qk,Busy:busy};
+            const room = {OP:op,Vj:vj,Vk:vk,Qj:qj,Qk:qk,Busy:1};
             this.reservationStations[index] = room;
             return 1;
     }

@@ -19,14 +19,14 @@ class LoadBuffer{
         return -1;
     }
   
-    addROOM(address,busy)
+    addROOM(address)
     {
         const index = this.emptyIndex(); 
         if(index == -1)
         {
             return -1; //no space
         }
-            const room = {Address:address,Busy:busy};
+            const room = {Address:address,Busy:1};
             this.storeBuffer[index] = room;
             return 1;
     }

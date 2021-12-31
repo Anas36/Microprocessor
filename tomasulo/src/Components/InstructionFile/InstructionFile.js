@@ -7,33 +7,60 @@ class InstructionFile{
     }
 
 
-    addInstruction(instruction)
+    addInstruction(inst)
     {
             this.NumberOfInst++;
-            this.instructions.push(instruction);
+            this.instructions.push({instruction : inst,reservedRomm : '',Issue : -1,Execute:-1,Write_Result : -1});
 
 
     }
-    getOperation(index)
+    getOperationByIndex(index)
     {
-        const inst = this.instructions[index].split(/[ ,]+/);
+        const inst = this.instructions[index].instruction.split(/[ ,]+/);
         return inst[0];
     }
-    getDestination(index)
+    getOperationByInst(instruction)
     {
-        const inst = this.instructions[index].split(/[ ,]+/);
+        const inst = instruction.instruction.split(/[ ,]+/);
+        return inst[0];
+    }
+    getDestinationByIndex(index)
+    {
+        const inst = this.instructions[index].instruction.split(/[ ,]+/);
         return inst[1];
     }
-    getFirstSource(index)
+    getDestinationByInst(instruction)
     {
-        const inst = this.instructions[index].split(/[ ,]+/);
+        const inst = instruction.instruction.split(/[ ,]+/);
+        return inst[1];
+    }
+    getFirstSourceByIndex(index)
+    {
+        const inst = this.instructions[index].instruction.split(/[ ,]+/);
         return inst[2];
     }
-    getSecondSource(index)
+    getFirstSourcenByInst(instruction)
     {
-        const inst = this.instructions[index].split(/[ ,]+/);
+        const inst = instruction.instruction.split(/[ ,]+/);
+        return inst[2];
+    }
+    getSecondSourceByIndex(index)
+    {
+        const inst = this.instructions[index].instruction.split(/[ ,]+/);
         return inst[3];
     }
+    getSecondSourceByInst(instruction)
+    {
+        const inst = instruction.instruction.split(/[ ,]+/);
+        return inst[3];
+    }
+
+    getAddress(instruction) //LD F2 100    SD F2 0(R6)
+    {
+        const inst = instruction.instruction.split(/[ ,]+/);
+        return inst[2];
+    }
+ 
     
     displayInstruction(instruction)
     {
