@@ -14,6 +14,7 @@ class InstructionFile{
 
 
     }
+    
     getOperationByIndex(index)
     {
         const inst = this.instructions[index].instruction.split(/[ ,]+/);

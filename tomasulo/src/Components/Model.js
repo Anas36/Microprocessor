@@ -134,9 +134,10 @@ const Controller =()=> {
   }
 const Issue = (instruction)=>
 {
-  InstructionFile.instructions[InstTurn].
+  InstructionFile.instructions[InstTurn].Issue = CycleNo;
   if(isSpaceInStation(instruction))
   {
+
       const operation = InstructionFile.getOperationByInst(instruction);
       InstructionFile.instructions[InstTurn].Issue = CycleNo;
       const index = -1;
@@ -148,6 +149,7 @@ const Issue = (instruction)=>
       if(operation == 'L.D')
       {
         index = LoadBuffer.addROOM(LoadBuffer.getAddress(instruction)); 
+        InstructionFile.instructions.reservedRomm = 'L'+(index+1)
       }
       else if(operation == 'S.D')
       {
@@ -156,6 +158,8 @@ const Issue = (instruction)=>
         else
           Qj = InstructionFile.getFirstSourcenByInst(instruction);
         index = StoreBuffer.addROOM(LoadBuffer.getAddress(instruction),Vj,Qj); 
+        InstructionFile.instructions.reservedRomm = 'S'+(index+1)
+
       }
       else if(operation == 'MUL.D'  || operation == 'DIV.D')
       {     
@@ -170,7 +174,9 @@ const Issue = (instruction)=>
           Qk = InstructionFile.getFirstSourcenByInst(instruction);
         
 
-        index = MulDiv.addROOM(operation,Vj,Vk,Qj,Qk);  
+        index = MulDiv.addROOM(operation.substring(0, operation.length - 2),Vj,Vk,Qj,Qk);  
+        InstructionFile.instructions.reservedRomm = 'M'+(index+1)
+
       }
       else if(operation == 'ADD.D' || operation == 'SUB.D')
       {
@@ -185,7 +191,8 @@ const Issue = (instruction)=>
         Qk = InstructionFile.getFirstSourcenByInst(instruction);
       
 
-      index = AddSub.addROOM(operation,Vj,Vk,Qj,Qk); 
+      index = AddSub.addROOM(operation.substring(0, operation.length - 2),Vj,Vk,Qj,Qk); 
+      InstructionFile.instructions.reservedRomm = 'A'+(index+1)
       }
 
       if(index != -1)
@@ -194,6 +201,7 @@ const Issue = (instruction)=>
       }
       RegisterFile.setContent(InstructionFile.getDestinationByInst(instruction))
   }
+  RegisterFile.setQi(InstructionFile.getFirstSourcenByInst(instruction),InstructionFile.getFirstSourcenByInst(instruction))
 }
 const Next = ()=>{
   CycleNo++;

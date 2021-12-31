@@ -29,7 +29,7 @@ class ReservationStations{
        
             const room = {OP:op,Vj:vj,Vk:vk,Qj:qj,Qk:qk,Busy:1};
             this.reservationStations[index] = room;
-            return 1;
+            return index;
     }
     //getters
     getOperation(index)

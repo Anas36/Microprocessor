@@ -28,7 +28,7 @@ class LoadBuffer{
         }
             const room = {Address:address,Busy:1};
             this.storeBuffer[index] = room;
-            return 1;
+            return index;
     }
     //getters
     getAddress(index)
