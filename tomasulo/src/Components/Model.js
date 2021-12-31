@@ -11,7 +11,8 @@ export var Context = React.createContext()
 
 const Controller =()=> {
   const InstructionFile = new instructionFile();
-  const ALUReservationStations = new aLUReservationStations();
+  const MulDiv = new aLUReservationStations();
+  const AddSub = new aLUReservationStations();
   const StoreBuffer = new storeBuffer();
   const LoadBuffer = new loadBuffer();
   const CycleNo = 1;
@@ -28,7 +29,7 @@ const Controller =()=> {
       fetch(raw).then(r => r.text()).
       then(text => {
         content = text
-        console.log('con',content)
+       // console.log('con',content)
       let inst = '';
       for(var i = 0;i< content.length;i++)
       {
@@ -37,13 +38,16 @@ const Controller =()=> {
             InstructionFile.NumberOfInst ++;
               inst = inst.slice(0,inst.length-1)
               //const line = inst.split(/[ ,]+/);      
-            InstructionFile.addInstruction(inst);    
-            console.log('inst',inst)
+            InstructionFile.addInstruction(inst); 
+           // console.log('inst',inst)
             inst = '';
           }
-          console.log('final:',InstructionFile)
+         // console.log('final:',InstructionFile)
 
       }
+      console.log('final:',InstructionFile)
+
+      
 
       //console.log(this.instructions.instructions)
 

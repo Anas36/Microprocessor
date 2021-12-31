@@ -14,6 +14,7 @@ class ReservationStations{
             this.RegisterFile.push(register);
             return 1;
     }
+   
     //getters
     getQi(register) //get Qi of register by the name of the register
     {

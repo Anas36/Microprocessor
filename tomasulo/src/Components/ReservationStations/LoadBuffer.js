@@ -6,19 +6,32 @@ class LoadBuffer{
         console.log('created new LoadBuffer')
     }
 
+    emptyIndex()  //return index of empty space to reserve for a new inst.
+    {
+        for(let i = 0;i<this.loadBuffer.length;i++)
+        {
+            if(this.loadBuffer[i]== null)
+            {
+                return i;
 
+            }
+        }
+        return -1;
+    }
+  
     addROOM(address,busy)
     {
-        if(this.storeBuffer.size >= this.size)
+        const index = this.emptyIndex(); 
+        if(index == -1)
         {
             return -1; //no space
         }
             const room = {Address:address,Busy:busy};
-            this.storeBuffer.push(room);
+            this.storeBuffer[index] = room;
             return 1;
     }
     //getters
-    getaddresseration(index)
+    getAddress(index)
     {
         return this.storeBuffer[index].Address;
     }
@@ -30,7 +43,7 @@ class LoadBuffer{
     }
 
     //setters
-    setaddresseration(index,address)
+    setAddress(index,address)
     {
         this.storeBuffer[index].Address = address;
     }
@@ -41,7 +54,7 @@ class LoadBuffer{
         this.storeBuffer[index].Busy = busy;
     }
 
-    
+
     displayInstruction(room)
     {
         let result = '';

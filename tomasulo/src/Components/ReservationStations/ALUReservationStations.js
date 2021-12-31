@@ -6,15 +6,29 @@ class ReservationStations{
         console.log('created new ReservationStations')
     }
 
+    emptyIndex()  //return index of empty space to reserve for a new inst.
+    {
+        for(let i = 0;i<this.reservationStations.length;i++)
+        {
+            if(this.reservationStations[i]== null)
+            {
+                return i;
 
+            }
+        }
+        return -1;
+    }
+    
     addROOM(op,vj,vk,qj,qk,busy)
     {
-        if(this.reservationStations.size >= this.size)
+        const index = this.emptyIndex(); 
+        if(index == -1)
         {
             return -1; //no space
         }
+       
             const room = {OP:op,Vj:vj,Vk:vk,Qj:qj,Qk:qk,Busy:busy};
-            this.reservationStations.push(room);
+            this.reservationStations[index] = room;
             return 1;
     }
     //getters

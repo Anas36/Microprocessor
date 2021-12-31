@@ -7,15 +7,34 @@ class InstructionFile{
     }
 
 
-    addInstruction(operation,destination,first_source,second_source)
+    addInstruction(instruction)
     {
-        this.NumberOfInst++;
-        if(operation == 'L.D')
-            this.instructions.push({operation:operation,destination:destination,first_source:first_source})
-        else
-            this.instructions.push({operation:operation,destination:destination,first_source:first_source,second_source:second_source})
+            this.NumberOfInst++;
+            this.instructions.push(instruction);
+
 
     }
+    getOperation(index)
+    {
+        const inst = this.instructions[index].split(/[ ,]+/);
+        return inst[0];
+    }
+    getDestination(index)
+    {
+        const inst = this.instructions[index].split(/[ ,]+/);
+        return inst[1];
+    }
+    getFirstSource(index)
+    {
+        const inst = this.instructions[index].split(/[ ,]+/);
+        return inst[2];
+    }
+    getSecondSource(index)
+    {
+        const inst = this.instructions[index].split(/[ ,]+/);
+        return inst[3];
+    }
+    
     displayInstruction(instruction)
     {
         let result = '';

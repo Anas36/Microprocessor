@@ -5,16 +5,30 @@ class StoreBuffer{
         this.storeBuffer = new Array();
         console.log('created new StoreBuffer')
     }
+    emptyIndex()  //return index of empty space to reserve for a new inst.
+    {
+        for(let i = 0;i<this.storeBuffer.length;i++)
+        {
+            if(this.storeBuffer[i]== null)
+            {
+                return i;
 
+            }
+        }
+        return -1;
+    }
+  
     addROOM(address,v,q,busy)
     {
-        if(this.storeBuffer.size >= this.size)
+        const index = this.emptyIndex(); 
+        if(index == -1)
         {
             return -1; //no space
         }
-            const room = {Address:address,V:v,Q:q,Busy:busy};
-            this.storeBuffer.push(room);
-            return 1;
+       
+        const room = {Address:address,V:v,Q:q,Busy:busy};
+        this.storeBuffer[index] = room;
+        return 1;
     }
     //getters
     getaddresseration(index)
