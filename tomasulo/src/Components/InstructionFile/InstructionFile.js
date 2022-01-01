@@ -9,10 +9,8 @@ class InstructionFile{
 
     addInstruction(inst)
     {
-            this.NumberOfInst++;
-            this.instructions.push({instruction : inst,reservedRomm : '',Issue : -1,Execute:-1,Write_Result : -1});
-
-
+        this.instructions.push({instruction : inst,reservedRomm : '',Issue : -1,Execute:-1,ExecuteFinish : -1,Write_Result : -1,index : this.NumberOfInst});
+        this.NumberOfInst++;
     }
     
     getOperationByIndex(index)

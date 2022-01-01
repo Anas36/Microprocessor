@@ -2,11 +2,22 @@ class RegisterFile{
 
     constructor(size){
         this.size = size;
-        this.RegisterFile = new Array();
+        this.RegisterFile = new Array(size);
         console.log('created new RegisterFile')
     }
 
+        emptyIndex()  //return index of empty space to reserve for a new inst.
+        {
+            for(let i = 0;i<this.RegisterFile.length;i++)
+            {
+                if(this.RegisterFile[i]== null || this.RegisterFile[i]== undefined || this.RegisterFile[i]== '' || this.RegisterFile[i]== ' ')
+                {
+                    return i;
 
+                }
+            }
+            return -1;
+        }
     addRegister(register,qi,content)
     {
        
@@ -19,6 +30,8 @@ class RegisterFile{
     {
         for(let i = 0;i<this.RegisterFile.length;i++)
         {
+            if(this.RegisterFile[i] == undefined)
+                continue;
             if(this.RegisterFile[i].Register == register)
             {
                 return this.RegisterFile[i].Qi
@@ -29,8 +42,11 @@ class RegisterFile{
     }
     getContent(register)  //get content of register by the name of the register
     {
+        
         for(let i = 0;i<this.RegisterFile.length;i++)
         {
+            if(this.RegisterFile[i] == undefined)
+                continue;
             if(this.RegisterFile[i].Register == register)
             {
                 return this.RegisterFile[i].Content
@@ -46,25 +62,36 @@ class RegisterFile{
         let flag = false;
         for(let i = 0;i<this.RegisterFile.length;i++)
         {
-            flag = true
+            if(this.RegisterFile[i] == undefined)
+                continue;
             if(this.RegisterFile[i].Register == register)
             {
                  this.RegisterFile[i].Qi = qi;
-                 this.RegisterFile[i].content = null;
+                 this.RegisterFile[i].Content = null;
+                 flag = true
+
 
             }
         }
-        return flag? 1: -1;
+        if(flag == false)
+        {
+            const index = this.emptyIndex();
+            this.RegisterFile[index] = {Register:register,Qi:qi,Content:null}
+        }
     }
     setContent(register,content)  //set content of register by the name of the register
     { 
+        //missing erease qi
         let flag = false;
         for(let i = 0;i<this.RegisterFile.length;i++)
         {
-            flag = true
+            if(this.RegisterFile[i] == undefined)
+                continue;
             if(this.RegisterFile[i].Register == register)
             {
                  this.RegisterFile[i].Content = content;
+                 flag = true
+
 
             }
         }

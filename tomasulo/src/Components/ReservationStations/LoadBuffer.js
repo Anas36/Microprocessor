@@ -2,7 +2,7 @@ class LoadBuffer{
 
     constructor(size){
         this.size = size;
-        this.loadBuffer = new Array();
+        this.loadBuffer = new Array(size);
         console.log('created new LoadBuffer')
     }
 
@@ -10,7 +10,7 @@ class LoadBuffer{
     {
         for(let i = 0;i<this.loadBuffer.length;i++)
         {
-            if(this.loadBuffer[i]== null)
+            if(this.loadBuffer[i]== null || this.loadBuffer[i]== undefined || this.loadBuffer[i]== '' || this.loadBuffer[i]== ' ')
             {
                 return i;
 
@@ -21,13 +21,15 @@ class LoadBuffer{
   
     addROOM(address)
     {
+        console.log('here in add room')
         const index = this.emptyIndex(); 
+        console.log('empty',index)
         if(index == -1)
         {
             return -1; //no space
         }
             const room = {Address:address,Busy:1};
-            this.storeBuffer[index] = room;
+            this.loadBuffer[index] = room;
             return index;
     }
     //getters

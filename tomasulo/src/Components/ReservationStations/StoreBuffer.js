@@ -2,14 +2,14 @@ class StoreBuffer{
 
     constructor(size){
         this.size = size;
-        this.storeBuffer = new Array();
+        this.storeBuffer = new Array(size);
         console.log('created new StoreBuffer')
     }
     emptyIndex()  //return index of empty space to reserve for a new inst.
     {
         for(let i = 0;i<this.storeBuffer.length;i++)
         {
-            if(this.storeBuffer[i]== null)
+            if(this.storeBuffer[i]== null || this.storeBuffer[i]== undefined || this.storeBuffer[i]== '' || this.storeBuffer[i]== ' ')
             {
                 return i;
 

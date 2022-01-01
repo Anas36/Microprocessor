@@ -2,7 +2,7 @@ class ReservationStations{
 
     constructor(size){
         this.size = size;
-        this.reservationStations = new Array();
+        this.reservationStations = new Array(size);
         console.log('created new ReservationStations')
     }
 
@@ -10,7 +10,7 @@ class ReservationStations{
     {
         for(let i = 0;i<this.reservationStations.length;i++)
         {
-            if(this.reservationStations[i]== null)
+            if(this.reservationStations[i]== null || this.reservationStations[i]== undefined || this.reservationStations[i]== '' || this.reservationStations[i]== ' ')
             {
                 return i;
 
