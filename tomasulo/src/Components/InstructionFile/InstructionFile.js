@@ -9,7 +9,7 @@ class InstructionFile{
 
     addInstruction(inst)
     {
-        this.instructions.push({instruction : inst,reservedRomm : '',Issue : -1,Execute:-1,ExecuteFinish : -1,Write_Result : -1,index : this.NumberOfInst});
+        this.instructions.push({instruction : inst,Issue : -1,Execute:-1,ExecuteFinish : -1,Write_Result : -1,index : this.NumberOfInst,reservedRomm : ''});
         this.NumberOfInst++;
     }
     
@@ -60,12 +60,31 @@ class InstructionFile{
         return inst[2];
     }
  
-    
+    display()
+    {   
+        let result = 'Instructions:\n'
+       //  result += 'Instruction                   Issue              Execute                Write_Result\n'
+        for(let i = 0; i < this.instructions.length; i++)
+        {
+            result += (i+1)+' : '+ this.displayInstruction(this.instructions[i].instruction)+'\n';
+        }
+        return result;
+    }
     displayInstruction(instruction)
     {
         let result = '';
         Object.entries(instruction).forEach(item => {
-            result +=item[1] + ' '
+            // if(item[1][0] ==  'L')
+            //     result +=item[1] + '           '
+            // else if(item[1][0] ==  'L')
+            //     result +=item[1] + '       '
+            // else if(item.length < 5)
+            //     result +=item[1] + '       '
+            // else //ALU
+                 result +=item[1] + ''
+
+
+
         })
         return result.trim();
     }

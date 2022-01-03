@@ -21,19 +21,18 @@ const Controller =()=> {
   let MemoryFile  =new memoryFile(500);
   let CycleNo = 1;
   let InstTurn = 0;
-  let LoadCycles = 2;
-  let StoreCycles = 2;
-  let ADDcycles = 2;
-  let SUBCycles = 2;
-  let MULCycles = 2;
-  let DIVCycles = 2;
+  let LoadCycles = 1;
+  let StoreCycles = 1;
+  let ADDcycles = 1;
+  let SUBCycles = 1;
+  let MULCycles = 1;
+  let DIVCycles = 1;
   let bus = new Array();
 
   
 
   useEffect(() => {
     parser();
-    console.log('I am here')
   }, []);
 
 
@@ -43,7 +42,7 @@ const Controller =()=> {
       fetch(raw).then(r => r.text()).
       then(text => {
         content = text+'\n'
-        console.log('con',content)
+        // console.log('con',content)
       let inst = '';
       for(var i = 0;i< content.length;i++)
       {
@@ -77,7 +76,7 @@ const Controller =()=> {
   {
     for(let i = 0; i< RegisterFile.size;i++)
     {
-        RegisterFile.addRegister('F'+i,undefined,10*i)
+        RegisterFile.addRegister('F'+(i+1),undefined,10*i)
     }
   }
   const addMemoryWords =()=>
@@ -123,6 +122,7 @@ const Controller =()=> {
   }
   const haveItsOperands = (instruction) =>  //check if there operands to begin execute //usage : in execute
   {
+    
       let flag = false;
       const operation = InstructionFile.getOperationByInst(instruction);
      
@@ -145,7 +145,7 @@ const Controller =()=> {
           {
               flag = isEmptyIndex(AddSub.getQj(index)) &&  isEmptyIndex(AddSub.getQk(index));
           }
-
+          console.log('haveItsOperands',flag,'  ',CycleNo)
           return flag;
 
   }
@@ -167,7 +167,7 @@ const Controller =()=> {
 const Issue = (instruction)=>
 {
   if(InstructionFile.NumberOfInst > InstTurn  && InstructionFile.instructions[InstTurn].Issue == -1 && isSpaceInStation(instruction) ) //check
-  {
+  { 
      InstructionFile.instructions[InstTurn].Issue = CycleNo;
      const operation = InstructionFile.getOperationByInst(instruction);
       InstructionFile.instructions[InstTurn].Issue = CycleNo;
@@ -180,7 +180,7 @@ const Issue = (instruction)=>
       if(operation == 'L.D')
       {
         //LoadBuffer.addROOM(InstructionFile.getAddress(instruction))
-        console.log('add:',InstructionFile.getAddress(instruction))
+        // console.log('add:',InstructionFile.getAddress(instruction))
         index = LoadBuffer.addROOM(InstructionFile.getAddress(instruction))
         InstructionFile.instructions[InstTurn].reservedRomm = 'L'+(index+1)
       }
@@ -196,7 +196,7 @@ const Issue = (instruction)=>
       } 
       else if(operation == 'MUL.D'  || operation == 'DIV.D')
       {     
-        console.log('in issue',RegisterFile.getQi(InstructionFile.getFirstSourcenByInst(instruction)))
+        // console.log('in issue',RegisterFile.getQi(InstructionFile.getFirstSourcenByInst(instruction)))
         if(isEmpty(RegisterFile.getQi(InstructionFile.getFirstSourcenByInst(instruction))))
           Vj = RegisterFile.getContent(InstructionFile.getFirstSourcenByInst(instruction));
         else
@@ -214,7 +214,7 @@ const Issue = (instruction)=>
       }
       else if(operation == 'ADD.D' || operation == 'SUB.D')
       {
-        console.log('here')
+        // console.log('here')
         if(isEmpty(RegisterFile.getQi(InstructionFile.getFirstSourcenByInst(instruction)))) 
           Vj = RegisterFile.getContent(InstructionFile.getFirstSourcenByInst(instruction));
       else      
@@ -232,7 +232,7 @@ const Issue = (instruction)=>
 
       if(index != -1)
       {
-        console.log('in')
+        // console.log('in')
         if(operation != 'S.D')
           RegisterFile.setQi(InstructionFile.getDestinationByInst(instruction), InstructionFile.instructions[InstTurn].reservedRomm)
          InstTurn++;
@@ -243,10 +243,10 @@ const Issue = (instruction)=>
 const Execute = (instruction)=>
 {
     const operation = InstructionFile.getOperationByInst(instruction);
-    console.log('haveItsOperands',haveItsOperands(instruction))
+    // console.log('haveItsOperands',haveItsOperands(instruction))
     if(parseInt(instruction.Issue) != -1 && parseInt(instruction.Execute) == -1 && haveItsOperands(instruction) && parseInt(instruction.Issue) != CycleNo)
     {
-        console.log('in Execute',instruction.instruction)
+        // console.log('in Execute',instruction.instruction)
         let end = -1;
         InstructionFile.instructions[instruction.index].Execute = CycleNo;
         if(operation == 'L.D')
@@ -287,7 +287,7 @@ const FinishExecute = (instruction)=>
 {
 
   if(instruction.ExecuteFinish == CycleNo) {
-        console.log('in FinishExecute')
+        // console.log('in FinishExecute')
         let FirstOperand;
         let SecondOperand;
         let result;
@@ -354,36 +354,44 @@ const WriteResult = (instruction)=>
     let place = reservedRomm.substring(1);
     let ResIndex = parseInt(place)-1;
     const result = getResult(instruction.index);
-    console.log('clock:',CycleNo,' RESULT:',result)
+    // console.log('clock:',CycleNo,' RESULT:',result)
     //Q -> V or V = result
       for(let i =0;i < StoreBuffer.storeBuffer.length;i++)
       {
-          if(StoreBuffer.storeBuffer[i].V == instruction.reservedRomm)
+          if(StoreBuffer.storeBuffer[i].V == instruction.reservedRomm) //we don't need it
           {
             StoreBuffer.storeBuffer[i].V = result;
+            StoreBuffer.storeBuffer[i].Q = null;
           }
           if(StoreBuffer.storeBuffer[i].Q == instruction.reservedRomm)
           {
-            StoreBuffer.storeBuffer[i].Q = result;
+            StoreBuffer.storeBuffer[i].V = result;
+            StoreBuffer.storeBuffer[i].Q = null;
+
           }
       }
       for(let i =0;i < AddSub.reservationStations.length;i++)
       {
-        if(AddSub.reservationStations[i].Vj == instruction.reservedRomm)
+        if(AddSub.reservationStations[i].Vj == instruction.reservedRomm) //we don't need it
         {
           AddSub.reservationStations[i].Vj = result;
+          AddSub.reservationStations[i].Qj = null;
         }
         if(AddSub.reservationStations[i].Qj == instruction.reservedRomm)
         {
-          AddSub.reservationStations[i].Qj = result;
+          AddSub.reservationStations[i].Vj = result;
+          AddSub.reservationStations[i].Qj = null;
         }
-        if(AddSub.reservationStations[i].Vk == instruction.reservedRomm)
+        if(AddSub.reservationStations[i].Vk == instruction.reservedRomm) //we don't need it
         {
           AddSub.reservationStations[i].Vk = result;
+          AddSub.reservationStations[i].Qk = null;
+
         }
         if(AddSub.reservationStations[i].Qk == instruction.reservedRomm)
         {
-          AddSub.reservationStations[i].Qk = result;
+          AddSub.reservationStations[i].Qk = null;
+          AddSub.reservationStations[i].Vk = result;
         }
     
     }
@@ -451,26 +459,19 @@ const AllFinsh = ()=>{
 }
 const Next = ()=>{
   if(AllFinsh() == true)
-    return;
+    return -1;
   console.log('cycle number:',CycleNo)
-  console.log('InstructionFile:',InstructionFile)
-  console.log('RegisterFile:',RegisterFile);
-  console.log('MulDiv:',MulDiv);
-  console.log('AddSub:',AddSub);
-  console.log('LoadBuffer:',LoadBuffer);
-  console.log('StoreBuffer:',StoreBuffer);
-  console.log('Memory:',MemoryFile);
+
   const instruction = InstructionFile.instructions[InstTurn];
   console.log('InstTurn:',instruction)
   
   if(instruction != undefined && InstTurn < InstructionFile.NumberOfInst){
     Issue(instruction);
 }
-  console.log('BUS',bus)
   for(let i = 0; i < InstructionFile.NumberOfInst; i++)
   {
     if(InstructionFile.instructions[i].Issue != '-1'){
-    console.log('NextEX',InstructionFile.instructions[i]);
+    // console.log('NextEX',InstructionFile.instructions[i]);
     Execute(InstructionFile.instructions[i]);
     FinishExecute(InstructionFile.instructions[i]);}
   }
@@ -479,11 +480,22 @@ const Next = ()=>{
     if(WriteResult(InstructionFile.instructions[i]))
         break;
   }  
-  
-
-
-
+  console.log('Instructions: \n',InstructionFile.instructions)
+  console.log(RegisterFile.display());
+  console.log(MulDiv.display('MulDiv'));
+  console.log(AddSub.display('AddSub'));
+  console.log(LoadBuffer.display());
+  console.log(StoreBuffer.display());
+  console.log('Memory:',MemoryFile);
+  console.log('BUS::',bus)
   CycleNo++;
+  
+}
+
+const Automatic = ()=>{
+ while(1){ 
+  if(Next() == -1)
+    break;}
 }
 
 
@@ -498,6 +510,8 @@ const Next = ()=>{
       return (
         <>
         <button onClick={()=>Next()}>Next</button>
+        <button onClick={()=>Automatic()}>Final RESULT</button>
+
         <br/>
         CycleNo :{CycleNo}
         <br/>

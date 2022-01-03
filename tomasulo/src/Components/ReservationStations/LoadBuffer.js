@@ -29,7 +29,7 @@ class LoadBuffer{
     addROOM(address)
     {
         const index = this.emptyIndex(); 
-        console.log('empty',index)
+        // console.log('empty',index)
         if(index == -1)
         {
             return -1; //no space
@@ -68,12 +68,23 @@ class LoadBuffer{
         this.loadBuffer[index].Busy = busy;
     }
 
-
+    display(type)
+    {   
+        let tag = 'L'
+        let result = `Load Buffer:\n`
+        result += 'Tag   Address    Busy\n'
+        for(let i = 0; i < this.loadBuffer.length; i++)
+        {
+            
+            result += tag+(i+1)+' :    '+ this.displayInstruction(this.loadBuffer[i])+'\n';
+        }
+        return result;
+    }
     displayInstruction(room)
     {
         let result = '';
         Object.entries(room).forEach(item => {
-            result +=item[1] + ' '
+            result +=item[1] + '      '
         })
         return result.trim();
     }

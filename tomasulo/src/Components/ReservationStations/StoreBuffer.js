@@ -46,8 +46,8 @@ class StoreBuffer{
        
         const room = {Address:address,V:v,Q:q,Busy:1};
         this.storeBuffer[index] = room;
-        console.log('ROOM',room)
-        console.log('STORE BUFFER',this.storeBuffer)
+        // console.log('ROOM',room)
+        // console.log('STORE BUFFER',this.storeBuffer)
         return index;
     }
     deleteRoom(index)
@@ -94,6 +94,18 @@ class StoreBuffer{
     setBusy(index,busy)
     {
         this.storeBuffer[index].Busy = busy;
+    }
+    display()
+    {   
+        let tag = 'S';
+        let result = `Store Buffer:\n`
+        result += 'Tag   V    Q  Busy\n'
+        for(let i = 0; i < this.storeBuffer.length; i++)
+        {
+            
+            result += tag+(i+1)+' : '+ this.displayInstruction(this.storeBuffer[i])+'\n';
+        }
+        return result;
     }
 
     displayInstruction(room)

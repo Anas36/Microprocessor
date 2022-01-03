@@ -20,9 +20,9 @@ class RegisterFile{
         }
     addRegister(register,qi,content)
     {
-       
+            const index = this.emptyIndex();
             const Register = {Register:register,Qi:qi,Content:content};
-            this.RegisterFile.push(Register);
+            this.RegisterFile[index]=Register;
     }
    
     //getters
@@ -97,7 +97,27 @@ class RegisterFile{
         }
         return flag? 1: -1;
     }
-
+    spaces(i)
+    {
+       
+    }
+    display()
+    {   
+        let result = 'Registers:\n'
+        let space = '';
+     
+        for(let i = 0; i < this.RegisterFile.length; i++)
+        {
+            if(i< 9)
+                space = ' '
+            else if(i < 100)
+                space = ''
+            else if(i < 9999)
+                space = ''
+            result += (i+1)+space+' :   '+ this.displayInstruction(this.RegisterFile[i])+'\n';
+        }
+        return result;
+    }
     displayInstruction(room)
     {
         let result = '';

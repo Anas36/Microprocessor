@@ -97,12 +97,27 @@ class ReservationStations{
         this.reservationStations[index].Busy = busy;
     }
 
-
+    display(type)
+    {   
+        let tag;
+        if(type == 'MulDiv')
+            tag = 'M'
+        else
+            tag = 'A'
+        let result = `${type}:\n`
+        result += 'Tag   op   Vj    Vk     Qj    Qk  Busy\n'
+        for(let i = 0; i < this.reservationStations.length; i++)
+        {
+            
+            result += tag+(i+1)+' : '+ this.displayInstruction(this.reservationStations[i])+'\n';
+        }
+        return result;
+    }
     displayInstruction(room)
     {
         let result = '';
         Object.entries(room).forEach(item => {
-            result +=item[1] + ' '
+            result +=item[1] + '  '
         })
         return result.trim();
     }
