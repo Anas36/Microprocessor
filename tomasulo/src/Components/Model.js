@@ -403,7 +403,9 @@ const WriteResult = (instruction)=>
         }
         if(MulDiv.reservationStations[i].Qj == instruction.reservedRomm)
         {
-          MulDiv.reservationStations[i].Qj = result;
+          MulDiv.reservationStations[i].Vj = result;
+          MulDiv.reservationStations[i].Qj = null;
+
         }
         if(MulDiv.reservationStations[i].Vk == instruction.reservedRomm)
         {
@@ -411,7 +413,9 @@ const WriteResult = (instruction)=>
         }
         if(MulDiv.reservationStations[i].Qk == instruction.reservedRomm)
         {
-          MulDiv.reservationStations[i].Qk = result;
+          MulDiv.reservationStations[i].Vk = result;
+          MulDiv.reservationStations[i].Qk = null;
+
         }
     
     }
