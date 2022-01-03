@@ -3,13 +3,14 @@ class StoreBuffer{
     constructor(size){
         this.size = size;
         this.storeBuffer = new Array(size);
-        console.log('created new StoreBuffer')
+        console.log('created new StoreBuffer');
+        this.build();
     }
     emptyIndex()  //return index of empty space to reserve for a new inst.
     {
         for(let i = 0;i<this.storeBuffer.length;i++)
         {
-            if(this.storeBuffer[i]== null || this.storeBuffer[i]== undefined || this.storeBuffer[i]== '' || this.storeBuffer[i]== ' ')
+            if(this.storeBuffer[i]== null || this.storeBuffer[i]== undefined || this.storeBuffer[i]== '' || this.storeBuffer[i]== ' ' || this.storeBuffer[i].Busy == 0)
             {
                 return i;
 
@@ -17,7 +18,24 @@ class StoreBuffer{
         }
         return -1;
     }
-  
+    build()
+    {   
+        for(let i = 0;i<this.storeBuffer.length;i++)
+        {
+            this.storeBuffer[i] =  {Address:null,V:null,Q:null,Busy:0}
+        }
+    }
+    addByIndex(index,address,v,q)
+    {
+        if(index == -1)
+        {
+            return -1; //no space
+        }
+       
+        const room = {Address:address,V:v,Q:q,Busy:1};
+        this.storeBuffer[index] = room;
+        return index;
+    }
     addROOM(address,v,q)
     {
         const index = this.emptyIndex(); 
@@ -28,7 +46,15 @@ class StoreBuffer{
        
         const room = {Address:address,V:v,Q:q,Busy:1};
         this.storeBuffer[index] = room;
+        console.log('ROOM',room)
+        console.log('STORE BUFFER',this.storeBuffer)
         return index;
+    }
+    deleteRoom(index)
+    {
+        if(index > this.storeBuffer.length-1)
+            return;
+        this.storeBuffer[index] = {Address:null,V:null,Q:null,Busy:0}
     }
     //getters
     getAddress(index)
