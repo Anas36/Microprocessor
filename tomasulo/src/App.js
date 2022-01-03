@@ -3,12 +3,15 @@ import React from 'react';
 import { BrowserRouter as Router, Route} from "react-router-dom";
 import Controller from './Components/Model';
 import Model from './Components/Model';
+import Inst from './Components/Test2';
 
 function App() {
-  return (
+  return (  //    <Inst/> 
+
     <>
     <h1>hi</h1>
-      <Model/>
+    <Model/>
+   
     </>
   );
 }

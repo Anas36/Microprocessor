@@ -12,14 +12,23 @@ import memoryFile  from "./Memory/MemoryFile.js";
 export var Context = React.createContext()
 
 const Controller =()=> {
-  let InstructionFile = new instructionFile();
-  let MulDiv = new aLUReservationStations(3);
-  let AddSub = new aLUReservationStations(3);
-  let StoreBuffer = new storeBuffer(3);
-  let LoadBuffer = new loadBuffer(3);
-  let RegisterFile = new registerFile(20);
-  let MemoryFile  =new memoryFile(500);
+  let [InstructionFile,setInstructionFile] = useState(new instructionFile());
+  let [MulDiv,setMulDiv] = useState(new aLUReservationStations(3));
+  let [AddSub,setAddSub] = useState(new aLUReservationStations(3));
+  let [StoreBuffer,setStoreBuffer] = useState(new aLUReservationStations(3));
+  let [LoadBuffer,setLoadBuffer] = useState(new loadBuffer(3));
+  let [RegisterFile,setRegisterFile] = useState(new registerFile(20));
+  let [MemoryFile,setMemoryFile] = useState(new memoryFile(500));
+
+  //let InstructionFile = new instructionFile();
+  //let MulDiv = new aLUReservationStations(3);
+ // let AddSub = new aLUReservationStations(3);
+//let StoreBuffer = new storeBuffer(3);
+ // let LoadBuffer = new loadBuffer(3);
+ // let RegisterFile = new registerFile(20);
+ // let MemoryFile  =new memoryFile(500);
   let CycleNo = 1;
+  let [CycleNo1, setCycleNo1] = useState(1);
   let InstTurn = 0;
   let LoadCycles = 2;
   let StoreCycles = 2;
@@ -51,7 +60,9 @@ const Controller =()=> {
           if(content[i] == '\n'){
               inst = inst.slice(0,inst.length-1)
               //const line = inst.split(/[ ,]+/);      
-            InstructionFile.addInstruction(inst); 
+            InstructionFile.addInstruction(inst); //delete
+            setInstructionFile(InstructionFile.addInstruction(inst))
+            console.log('woooooo',InstructionFile.instructions);
            // console.log('inst',inst)
             inst = '';
           }
@@ -77,14 +88,15 @@ const Controller =()=> {
   {
     for(let i = 0; i< RegisterFile.size;i++)
     {
-        RegisterFile.addRegister('F'+i,undefined,10*i)
+        setRegisterFile(RegisterFile.addRegister('F'+i,undefined,10*i));
+       // RegisterFile.addRegister('F'+i,undefined,10*i)
     }
   }
   const addMemoryWords =()=>
   {
     for(let i = 0;i < MemoryFile.size;i++)
     {
-        MemoryFile.addWord(i,Math.floor(Math.random() *  MemoryFile.size +1)+100);  
+        setMemoryFile(MemoryFile.addWord(i,Math.floor(Math.random() *  MemoryFile.size +1)+100));  
     }
   }
   const isSpaceInStation = (instruction) =>  //return true if there a space in needed station so if we can Issue //usage : in Issue
@@ -180,9 +192,11 @@ const Issue = (instruction)=>
       if(operation == 'L.D')
       {
         //LoadBuffer.addROOM(InstructionFile.getAddress(instruction))
-        console.log('add:',InstructionFile.getAddress(instruction))
-        index = LoadBuffer.addROOM(InstructionFile.getAddress(instruction))
-        InstructionFile.instructions[InstTurn].reservedRomm = 'L'+(index+1)
+        console.log('add:',InstructionFile.getAddress(instruction));
+        const ind = LoadBuffer.emptyIndex();
+        setLoadBuffer(LoadBuffer.addROOM(InstructionFile.getAddress(instruction)));
+        index = LoadBuffer.addROOM(InstructionFile.getAddress(instruction)) //delete
+        InstructionFile.instructions[InstTurn].reservedRomm = 'L'+(ind+1)
       }
       else if(operation == 'S.D')
       {
@@ -190,8 +204,10 @@ const Issue = (instruction)=>
           Vj = RegisterFile.getContent(InstructionFile.getDestinationByInst(instruction));
         else     
           Qj = RegisterFile.getQi(InstructionFile.getDestinationByInst(instruction));
-        index = StoreBuffer.addROOM(InstructionFile.getAddress(instruction),Vj,Qj); 
-        InstructionFile.instructions[InstTurn].reservedRomm = 'S'+(index+1)
+        const ind = StoreBuffer.emptyIndex();
+        setStoreBuffer(StoreBuffer.addROOM(InstructionFile.getAddress(instruction),Vj,Qj));
+        index = StoreBuffer.addROOM(InstructionFile.getAddress(instruction),Vj,Qj); //delete
+        InstructionFile.instructions[InstTurn].reservedRomm = 'S'+(ind+1)
 
       } 
       else if(operation == 'MUL.D'  || operation == 'DIV.D')
@@ -207,9 +223,10 @@ const Issue = (instruction)=>
         else       
           Qk = RegisterFile.getQi(InstructionFile.getSecondSourceByInst(instruction));
         
-
-        index = MulDiv.addROOM(operation.substring(0, operation.length - 2),Vj,Vk,Qj,Qk);  
-        InstructionFile.instructions[InstTurn].reservedRomm = 'M'+(index+1)
+        const ind = MulDiv.emptyIndex();
+        setMulDiv(MulDiv.addROOM(operation.substring(0, operation.length - 2),Vj,Vk,Qj,Qk));
+        index = MulDiv.addROOM(operation.substring(0, operation.length - 2),Vj,Vk,Qj,Qk);  //delete
+        InstructionFile.instructions[InstTurn].reservedRomm = 'M'+(ind+1)
 
       }
       else if(operation == 'ADD.D' || operation == 'SUB.D')
@@ -225,9 +242,10 @@ const Issue = (instruction)=>
       else
           Qk = RegisterFile.getContent(InstructionFile.getSecondSourceByInst(instruction));
       
-
-      index = AddSub.addROOM(operation.substring(0, operation.length - 2),Vj,Vk,Qj,Qk); 
-      InstructionFile.instructions[InstTurn].reservedRomm = 'A'+(index+1)
+      const ind = AddSub.emptyIndex();
+      setAddSub(AddSub.addROOM(operation.substring(0, operation.length - 2),Vj,Vk,Qj,Qk)); 
+      index = AddSub.addROOM(operation.substring(0, operation.length - 2),Vj,Vk,Qj,Qk); //delete
+      InstructionFile.instructions[InstTurn].reservedRomm = 'A'+(ind+1)
       }
 
       if(index != -1)
@@ -450,8 +468,12 @@ const AllFinsh = ()=>{
     return false;
 }
 const Next = ()=>{
+  setCycleNo1(CycleNo1++);
+  
   if(AllFinsh() == true)
     return;
+  CycleNo++;
+  setCycleNo1(CycleNo1++);
   console.log('cycle number:',CycleNo)
   console.log('InstructionFile:',InstructionFile)
   console.log('RegisterFile:',RegisterFile);
@@ -479,11 +501,8 @@ const Next = ()=>{
     if(WriteResult(InstructionFile.instructions[i]))
         break;
   }  
-  
 
 
-
-  CycleNo++;
 }
 
 
@@ -500,6 +519,7 @@ const Next = ()=>{
         <button onClick={()=>Next()}>Next</button>
         <br/>
         CycleNo :{CycleNo}
+        CycleNo2 :{CycleNo1}
         <br/>
         InstructionFile : {InstructionFile.instructions}
         <br/>
@@ -507,14 +527,13 @@ const Next = ()=>{
         <br/>
         {/* MulDiv : {MulDiv.reservationStations} */}
         <br/>
-        RegisterFile : {RegisterFile.RegisterFile}
+        {/* RegisterFile : {RegisterFile.RegisterFile}
         <br/>
-        {/* AddSub : {AddSub.reservationStations} */}
         <br/>
         LoadBuffer : {LoadBuffer.LoadBuffer}
         <br/>
         StoreBuffer : {StoreBuffer.StoreBuffer}
- 
+  */}
         </>
         );
 
