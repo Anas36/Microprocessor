@@ -42,7 +42,7 @@ class LoadBuffer{
     {
         if(index > this.loadBuffer.length-1)
             return;
-        this.loadBuffer[index] = {Address:' ',Busy:0}
+        this.loadBuffer[index] = {Address:null,Busy:0}
     }
     //getters
     getAddress(index)

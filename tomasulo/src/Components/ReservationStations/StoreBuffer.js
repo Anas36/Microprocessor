@@ -99,7 +99,7 @@ class StoreBuffer{
     {   
         let tag = 'S';
         let result = `Store Buffer:\n`
-        result += 'Tag   V    Q  Busy\n'
+        result += 'Tag  Address       V    Q  Busy\n'
         for(let i = 0; i < this.storeBuffer.length; i++)
         {
             
@@ -111,8 +111,9 @@ class StoreBuffer{
     displayInstruction(room)
     {
         let result = '';
+        
         Object.entries(room).forEach(item => {
-            result +=item[1] + ' '
+            result +=item[1] + '   '
         })
         return result.trim();
     }

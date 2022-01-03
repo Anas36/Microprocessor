@@ -21,11 +21,11 @@ const Controller =()=> {
   let MemoryFile  =new memoryFile(500);
   let CycleNo = 1;
   let InstTurn = 0;
-  let LoadCycles = 1;
-  let StoreCycles = 1;
-  let ADDcycles = 1;
-  let SUBCycles = 1;
-  let MULCycles = 1;
+  let LoadCycles = 40;
+  let StoreCycles = 30;
+  let ADDcycles = 20;
+  let SUBCycles = 20;
+  let MULCycles = 20;
   let DIVCycles = 1;
   let bus = new Array();
 
